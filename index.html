@@ -211,11 +211,30 @@
       font-size: 14px;
     }
 
+    .btn-assist {
+      border: 1px solid #b8cdbc;
+      background: linear-gradient(180deg, #eef8ef, #e2f1e4);
+      color: #365344;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-weight: 700;
+      font-size: 13px;
+      box-shadow: 0 6px 16px rgba(77, 106, 83, 0.12);
+    }
+
+    .btn-assist:hover {
+      background: linear-gradient(180deg, #f4fcf5, #e8f5ea);
+    }
+
     .guide-toolbar-hint {
       color: var(--muted);
       margin-bottom: 14px;
       font-size: 12px;
       line-height: 1.7;
+      border: 1px solid var(--line);
+      background: #f8fcf9;
+      border-radius: 12px;
+      padding: 8px 10px;
     }
 
     .progress {
@@ -651,6 +670,87 @@
       line-height: 1.8;
     }
 
+    .all-types-box {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      background: linear-gradient(180deg, #ffffff, #f8fcf9);
+    }
+
+    .all-types-box h3 {
+      margin: 0 0 12px;
+      font-size: 16px;
+    }
+
+    .type-tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .type-tag {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #355140;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      transition: all .18s ease;
+    }
+
+    .type-tag:hover {
+      border-color: #a9c2ae;
+      background: #f4fbf5;
+    }
+
+    .type-tag.active {
+      background: linear-gradient(180deg, #6f8f74, #55725c);
+      border-color: #55725c;
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(77, 106, 83, 0.24);
+    }
+
+    .type-detail-panel {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 14px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .type-detail-code {
+      font-size: 18px;
+      font-weight: 800;
+      color: #27392e;
+    }
+
+    .type-detail-intro {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .type-detail-desc {
+      margin: 0;
+      color: #304034;
+      font-size: 14px;
+      line-height: 1.9;
+      white-space: pre-wrap;
+    }
+
+    .type-detail-poster {
+      width: 100%;
+      max-height: 320px;
+      object-fit: contain;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #f8fcf9;
+    }
+
     .author-box {
       border: 1px solid var(--line);
       border-radius: 18px;
@@ -758,6 +858,7 @@
         <div class="guide-toolbar">
           <label for="targetTypeSelect">目标人格</label>
           <select id="targetTypeSelect" class="guide-select"></select>
+          <button id="applyGuideBtn" type="button" class="btn-assist">一键按目标作答</button>
         </div>
         <div class="guide-toolbar-hint" id="targetTypeHint">选择一个人格后，每题会显示建议选项。</div>
 
@@ -804,6 +905,12 @@
           <div class="note-box">
             <h3>友情提示</h3>
             <p id="funNote">本测试仅供娱乐，别拿它当诊断、面试、相亲、分手、招魂、算命或人生判决书。</p>
+          </div>
+
+          <div class="all-types-box">
+            <h3>全部人格档案</h3>
+            <div class="type-tag-list" id="typeTagList"></div>
+            <div class="type-detail-panel" id="typeDetailPanel"></div>
           </div>
 
                     <details class="author-box">
@@ -1309,33 +1416,33 @@
   }
 };
     const TYPE_IMAGES = {
-  "IMSB": "./image/IMSB.png",
-  "BOSS": "./image/BOSS.png",
-  "MUM": "./image/MUM.png",
-  "FAKE": "./image/FAKE.png",
-  "Dior-s": "./image/Dior-s.jpg",
-  "DEAD": "./image/DEAD.png",
-  "ZZZZ": "./image/ZZZZ.png",
-  "GOGO": "./image/GOGO.png",
-  "FUCK": "./image/FUCK.png",
-  "CTRL": "./image/CTRL.png",
-  "HHHH": "./image/HHHH.png",
-  "SEXY": "./image/SEXY.png",
-  "OJBK": "./image/OJBK.png",
-  "JOKE-R": "./image/JOKE-R.jpg",
-  "POOR": "./image/POOR.png",
-  "OH-NO": "./image/OH-NO.png",
-  "MONK": "./image/MONK.png",
-  "SHIT": "./image/SHIT.png",
-  "THAN-K": "./image/THAN-K.png",
-  "MALO": "./image/MALO.png",
-  "ATM-er": "./image/ATM-er.png",
-  "THIN-K": "./image/THIN-K.png",
-  "SOLO": "./image/SOLO.png",
-  "LOVE-R": "./image/LOVE-R.png",
-  "WOC!": "./image/WOC.png",
-  "DRUNK": "./image/DRUNK.png",
-  "IMFW": "./image/IMFW.png"
+  "IMSB": "https://sbti.catwu.cn/image/IMSB.png",
+  "BOSS": "https://sbti.catwu.cn/image/BOSS.png",
+  "MUM": "https://sbti.catwu.cn/image/MUM.png",
+  "FAKE": "https://sbti.catwu.cn/image/FAKE.png",
+  "Dior-s": "https://sbti.catwu.cn/image/Dior-s.jpg",
+  "DEAD": "https://sbti.catwu.cn/image/DEAD.png",
+  "ZZZZ": "https://sbti.catwu.cn/image/ZZZZ.png",
+  "GOGO": "https://sbti.catwu.cn/image/GOGO.png",
+  "FUCK": "https://sbti.catwu.cn/image/FUCK.png",
+  "CTRL": "https://sbti.catwu.cn/image/CTRL.png",
+  "HHHH": "https://sbti.catwu.cn/image/HHHH.png",
+  "SEXY": "https://sbti.catwu.cn/image/SEXY.png",
+  "OJBK": "https://sbti.catwu.cn/image/OJBK.png",
+  "JOKE-R": "https://sbti.catwu.cn/image/JOKE-R.jpg",
+  "POOR": "https://sbti.catwu.cn/image/POOR.png",
+  "OH-NO": "https://sbti.catwu.cn/image/OH-NO.png",
+  "MONK": "https://sbti.catwu.cn/image/MONK.png",
+  "SHIT": "https://sbti.catwu.cn/image/SHIT.png",
+  "THAN-K": "https://sbti.catwu.cn/image/THAN-K.png",
+  "MALO": "https://sbti.catwu.cn/image/MALO.png",
+  "ATM-er": "https://sbti.catwu.cn/image/ATM-er.png",
+  "THIN-K": "https://sbti.catwu.cn/image/THIN-K.png",
+  "SOLO": "https://sbti.catwu.cn/image/SOLO.png",
+  "LOVE-R": "https://sbti.catwu.cn/image/LOVE-R.png",
+  "WOC!": "https://sbti.catwu.cn/image/WOC.png",
+  "DRUNK": "https://sbti.catwu.cn/image/DRUNK.png",
+  "IMFW": "https://sbti.catwu.cn/image/IMFW.png"
 };
 
     const NORMAL_TYPES = [
@@ -1541,6 +1648,9 @@
     const testHint = document.getElementById('testHint');
     const targetTypeSelect = document.getElementById('targetTypeSelect');
     const targetTypeHint = document.getElementById('targetTypeHint');
+    const applyGuideBtn = document.getElementById('applyGuideBtn');
+    const typeTagList = document.getElementById('typeTagList');
+    const typeDetailPanel = document.getElementById('typeDetailPanel');
     const guideFallbackPattern = 'LLH-HLL-LHL-HHH-HML';
     let guideState = null;
 
@@ -1692,6 +1802,38 @@
       return pattern ? buildGuideFromPattern(pattern, code) : null;
     }
 
+    function getQuestionValueByPreference(question, preferred = 2) {
+      const target = question.options.find(opt => opt.value === preferred);
+      return target ? target.value : question.options[0].value;
+    }
+
+    function applyGuideAnswers() {
+      if (!guideState) {
+        targetTypeHint.textContent = '请先选择一个目标人格，再使用一键作答。';
+        return;
+      }
+
+      if (guideState.mode === 'drunk') {
+        questions.forEach(q => {
+          app.answers[q.id] = getQuestionValueByPreference(q, 2);
+        });
+        app.answers.drink_gate_q1 = 3;
+        app.answers.drink_gate_q2 = 2;
+      } else {
+        questions.forEach(q => {
+          const planned = guideState.plan[q.id];
+          if (planned !== undefined) {
+            app.answers[q.id] = planned;
+          }
+        });
+        app.answers.drink_gate_q1 = guideState.plan.drink_gate_q1 ?? 1;
+        if (app.answers.drink_gate_q1 === 3) app.answers.drink_gate_q1 = 1;
+        delete app.answers.drink_gate_q2;
+      }
+
+      renderQuestions();
+    }
+
     function getGuideOptionHint(question, value) {
       const index = question.options.findIndex(opt => opt.value === value);
       if (index === -1) return null;
@@ -1769,6 +1911,34 @@
         guideState = buildGuideForType(app.guideTypeCode);
         refreshGuideHint();
         renderQuestions();
+      });
+    }
+
+    function renderTypeDetails(activeCode) {
+      if (!typeTagList || !typeDetailPanel) return;
+
+      const types = Object.values(TYPE_LIBRARY);
+      const selectedCode = TYPE_LIBRARY[activeCode] ? activeCode : types[0].code;
+      const selected = TYPE_LIBRARY[selectedCode];
+      const imageSrc = TYPE_IMAGES[selectedCode];
+
+      typeTagList.innerHTML = types.map(type => `
+        <button type="button" class="type-tag ${type.code === selectedCode ? 'active' : ''}" data-type-code="${type.code}">
+          ${type.code}
+        </button>
+      `).join('');
+
+      typeDetailPanel.innerHTML = `
+        <div class="type-detail-code">${selected.code}（${selected.cn}）</div>
+        <div class="type-detail-intro">${selected.intro}</div>
+        ${imageSrc ? `<img class="type-detail-poster" src="${imageSrc}" alt="${selected.code}（${selected.cn}）" />` : ''}
+        <p class="type-detail-desc">${selected.desc}</p>
+      `;
+
+      typeTagList.querySelectorAll('.type-tag').forEach(btn => {
+        btn.addEventListener('click', () => {
+          renderTypeDetails(btn.dataset.typeCode);
+        });
       });
     }
 
@@ -1893,6 +2063,7 @@
       }
 
       renderDimList(result);
+      renderTypeDetails(type.code);
       showScreen('result');
     }
 
@@ -1911,6 +2082,9 @@
     }
 
     initGuideSelector();
+    if (applyGuideBtn) {
+      applyGuideBtn.addEventListener('click', applyGuideAnswers);
+    }
     document.getElementById('startBtn').addEventListener('click', () => startTest(false));
     document.getElementById('backIntroBtn').addEventListener('click', () => showScreen('intro'));
     document.getElementById('submitBtn').addEventListener('click', renderResult);
